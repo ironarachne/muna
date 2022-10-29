@@ -6,7 +6,7 @@ kill_timeout = 5
 processes = []
 
 [build]
-  image = "ironarachne/muna:1.0.0"
+  image = "ironarachne/muna:1.0.1"
 
 [env]
 

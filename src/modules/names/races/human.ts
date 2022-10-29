@@ -67,7 +67,7 @@ function male(): NameGenerator {
   let gen = new GenericNameGenerator();
 
   gen.patterns = [
-    "(T,D)(A,O),(M,N)",
+    "(T,D)(A,O)(M,N)",
     "(AE,E)DM(O,U)ND",
     "(B,G)(A,O)(R,RR)IS",
     "AN(T,D)O(N,NN)(Y,IUS)",
