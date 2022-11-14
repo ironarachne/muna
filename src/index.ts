@@ -14,6 +14,10 @@ import TrollSet from "./modules/names/races/troll";
 import express from "express";
 import GeneratorSet from "./modules/names/generatorset";
 
+const winston = require('winston');
+const console = new winston.transports.Console();
+winston.add(console);
+
 const app = express();
 const port = 3000;
 const dragonbornGenSet: GeneratorSet = new DragonbornSet();
@@ -38,155 +42,76 @@ class NameResponse {
   }
 }
 
+function handleNames(raceName: string, req: express.Request, res: express.Response) {
+  let count: number = 10;
+  if (req.query.count) {
+    count = parseInt(req.query.count as string);
+  }
+  let nameType: string = "male";
+  if (req.query.nameType && typeof req.query.nameType === "string") {
+    nameType = req.query.nameType;
+  }
+  let response;
+  try {
+    response = getNames(raceName, nameType, count);
+  } catch(err) {
+    winston.error(`ERROR: /${raceName}/ ${nameType} ${count}`);
+    res.sendStatus(500);
+  }
+  winston.info(`/${raceName}/ ${nameType} ${count}`);
+  res.send(response);
+}
+
 app.get("/", (req: express.Request, res: express.Response) => {
   res.send("MUNA!");
 });
 
 app.get("/dragonborn/", (req: express.Request, res: express.Response) => {
-  let count: number = 10;
-  if (req.query.count) {
-    count = parseInt(req.query.count as string);
-  }
-  let nameType: string = "male";
-  if (req.query.nameType && typeof req.query.nameType === "string") {
-    nameType = req.query.nameType;
-  }
-  let response = getNames("dragonborn", nameType, count);
-  res.send(response);
+  handleNames("dragonborn", req, res);
 });
 
 app.get("/dwarf/", (req: express.Request, res: express.Response) => {
-  let count: number = 10;
-  if (req.query.count) {
-    count = parseInt(req.query.count as string);
-  }
-  let nameType: string = "male";
-  if (req.query.nameType && typeof req.query.nameType === "string") {
-    nameType = req.query.nameType;
-  }
-  let response = getNames("dwarf", nameType, count);
-  res.send(response);
+  handleNames("dwarf", req, res);
 });
 
 app.get("/elf/", (req: express.Request, res: express.Response) => {
-  let count: number = 10;
-  if (req.query.count) {
-    count = parseInt(req.query.count as string);
-  }
-  let nameType: string = "male";
-  if (req.query.nameType && typeof req.query.nameType === "string") {
-    nameType = req.query.nameType;
-  }
-  let response = getNames("elf", nameType, count);
-  res.send(response);
+  handleNames("elf", req, res);
 });
 
 app.get("/gnome/", (req: express.Request, res: express.Response) => {
-  let count: number = 10;
-  if (req.query.count) {
-    count = parseInt(req.query.count as string);
-  }
-  let nameType: string = "male";
-  if (req.query.nameType && typeof req.query.nameType === "string") {
-    nameType = req.query.nameType;
-  }
-  let response = getNames("gnome", nameType, count);
-  res.send(response);
+  handleNames("gnome", req, res);
 });
 
 app.get("/halfling/", (req: express.Request, res: express.Response) => {
-  let count: number = 10;
-  if (req.query.count) {
-    count = parseInt(req.query.count as string);
-  }
-  let nameType: string = "male";
-  if (req.query.nameType && typeof req.query.nameType === "string") {
-    nameType = req.query.nameType;
-  }
-  let response = getNames("halfling", nameType, count);
-  res.send(response);
+  handleNames("halfling", req, res);
 });
 
 app.get("/halfelf/", (req: express.Request, res: express.Response) => {
-  let count: number = 10;
-  if (req.query.count) {
-    count = parseInt(req.query.count as string);
-  }
-  let nameType: string = "male";
-  if (req.query.nameType && typeof req.query.nameType === "string") {
-    nameType = req.query.nameType;
-  }
-  let response = getNames("halfelf", nameType, count);
-  res.send(response);
+  handleNames("halfelf", req, res);
 });
 
 app.get("/halforc/", (req: express.Request, res: express.Response) => {
-  let count: number = 10;
-  if (req.query.count) {
-    count = parseInt(req.query.count as string);
-  }
-  let nameType: string = "male";
-  if (req.query.nameType && typeof req.query.nameType === "string") {
-    nameType = req.query.nameType;
-  }
-  let response = getNames("halforc", nameType, count);
-  res.send(response);
+  handleNames("halforc", req, res);
 });
 
 app.get("/human/", (req: express.Request, res: express.Response) => {
-  let count: number = 10;
-  if (req.query.count) {
-    count = parseInt(req.query.count as string);
-  }
-  let nameType: string = "male";
-  if (req.query.nameType && typeof req.query.nameType === "string") {
-    nameType = req.query.nameType;
-  }
-  let response = getNames("human", nameType, count);
-  res.send(response);
+  handleNames("human", req, res);
 });
 
 app.get("/orc/", (req: express.Request, res: express.Response) => {
-  let count: number = 10;
-  if (req.query.count) {
-    count = parseInt(req.query.count as string);
-  }
-  let nameType: string = "male";
-  if (req.query.nameType && typeof req.query.nameType === "string") {
-    nameType = req.query.nameType;
-  }
-  let response = getNames("orc", nameType, count);
-  res.send(response);
+  handleNames("orc", req, res);
 });
 
 app.get("/tiefling/", (req: express.Request, res: express.Response) => {
-  let count: number = 10;
-  if (req.query.count) {
-    count = parseInt(req.query.count as string);
-  }
-  let nameType: string = "male";
-  if (req.query.nameType && typeof req.query.nameType === "string") {
-    nameType = req.query.nameType;
-  }
-  let response = getNames("tiefling", nameType, count);
-  res.send(response);
+  handleNames("tiefling", req, res);
 });
 
 app.get("/troll/", (req: express.Request, res: express.Response) => {
-  let count: number = 10;
-  if (req.query.count) {
-    count = parseInt(req.query.count as string);
-  }
-  let nameType: string = "male";
-  if (req.query.nameType && typeof req.query.nameType === "string") {
-    nameType = req.query.nameType;
-  }
-  let response = getNames("troll", nameType, count);
-  res.send(response);
+  handleNames("troll", req, res);
 });
 
 app.listen(port, () => {
-  console.log(`MUNA listening on port ${port}`);
+  winston.info("MUNA is running");
 });
 
 function getNames(race: string, nameType: string, count: number): NameResponse {
@@ -204,6 +129,10 @@ function getNames(race: string, nameType: string, count: number): NameResponse {
     troll: trollGenSet,
   };
 
+  if (count < 1) {
+    throw new Error(`invalid count: ${count}`);
+  }
+
   let genSet = sets[race];
   let result = new NameResponse(count, []);
 
@@ -213,6 +142,8 @@ function getNames(race: string, nameType: string, count: number): NameResponse {
     result.names = genSet.female.generate(count);
   } else if (nameType == "family") {
     result.names = genSet.family.generate(count);
+  } else {
+    throw new Error(`bad name type: ${nameType}`);
   }
 
   return result;
