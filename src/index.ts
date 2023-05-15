@@ -4,17 +4,19 @@ import DragonbornSet from "./modules/names/races/dragonborn";
 import DwarfSet from "./modules/names/races/dwarf";
 import ElfSet from "./modules/names/races/elf";
 import GnomeSet from "./modules/names/races/gnome";
-import HalflingSet from "./modules/names/races/halfling";
+import GoblinSet from "./modules/names/races/goblin";
 import HalfElfSet from "./modules/names/races/halfelf";
+import HalflingSet from "./modules/names/races/halfling";
 import HalfOrcSet from "./modules/names/races/halforc";
 import HumanSet from "./modules/names/races/human";
 import OrcSet from "./modules/names/races/orc";
 import TieflingSet from "./modules/names/races/tiefling";
 import TrollSet from "./modules/names/races/troll";
+
 import express from "express";
 import GeneratorSet from "./modules/names/generatorset";
 
-const winston = require('winston');
+const winston = require("winston");
 const console = new winston.transports.Console();
 winston.add(console);
 
@@ -24,6 +26,7 @@ const dragonbornGenSet: GeneratorSet = new DragonbornSet();
 const dwarfGenSet: GeneratorSet = new DwarfSet();
 const elfGenSet: GeneratorSet = new ElfSet();
 const gnomeGenSet: GeneratorSet = new GnomeSet();
+const goblinGenSet: GeneratorSet = new GoblinSet();
 const halfElfGenSet: GeneratorSet = new HalfElfSet();
 const halflingGenSet: GeneratorSet = new HalflingSet();
 const halfOrcGenSet: GeneratorSet = new HalfOrcSet();
@@ -42,7 +45,11 @@ class NameResponse {
   }
 }
 
-function handleNames(raceName: string, req: express.Request, res: express.Response) {
+function handleNames(
+  raceName: string,
+  req: express.Request,
+  res: express.Response
+) {
   let count: number = 10;
   if (req.query.count) {
     count = parseInt(req.query.count as string);
@@ -54,7 +61,7 @@ function handleNames(raceName: string, req: express.Request, res: express.Respon
   let response;
   try {
     response = getNames(raceName, nameType, count);
-  } catch(err) {
+  } catch (err) {
     winston.error(`ERROR: /${raceName}/ ${nameType} ${count}`);
     res.sendStatus(500);
   }
@@ -80,6 +87,10 @@ app.get("/elf/", (req: express.Request, res: express.Response) => {
 
 app.get("/gnome/", (req: express.Request, res: express.Response) => {
   handleNames("gnome", req, res);
+});
+
+app.get("/goblin/", (req: express.Request, res: express.Response) => {
+  handleNames("goblin", req, res);
 });
 
 app.get("/halfling/", (req: express.Request, res: express.Response) => {
@@ -120,6 +131,7 @@ function getNames(race: string, nameType: string, count: number): NameResponse {
     dwarf: dwarfGenSet,
     elf: elfGenSet,
     gnome: gnomeGenSet,
+    goblin: goblinGenSet,
     halfling: halflingGenSet,
     halfelf: halfElfGenSet,
     halforc: halfOrcGenSet,
