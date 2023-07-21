@@ -24,4 +24,8 @@ COPY --from=build /app/dist ./dist
 
 EXPOSE 3000
 
+ENV NEW_RELIC_NO_CONFIG_FILE=true
+ENV NEW_RELIC_DISTRIBUTED_TRACING_ENABLED=true \
+NEW_RELIC_LOG=stdout
+
 CMD ["node", "dist/index.js"] 

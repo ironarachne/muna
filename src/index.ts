@@ -1,5 +1,7 @@
 "use strict";
 
+require('newrelic');
+
 import DragonbornSet from "./modules/names/races/dragonborn";
 import DwarfSet from "./modules/names/races/dwarf";
 import ElfSet from "./modules/names/races/elf";
