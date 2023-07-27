@@ -1,41 +1,29 @@
 "use strict";
 
-require('newrelic');
+import 'newrelic';
 
-import DragonbornSet from "./modules/names/races/dragonborn";
-import DwarfSet from "./modules/names/races/dwarf";
-import ElfSet from "./modules/names/races/elf";
-import GnomeSet from "./modules/names/races/gnome";
-import GoblinSet from "./modules/names/races/goblin";
-import HalfElfSet from "./modules/names/races/halfelf";
-import HalflingSet from "./modules/names/races/halfling";
-import HalfOrcSet from "./modules/names/races/halforc";
-import HumanSet from "./modules/names/races/human";
-import OrcSet from "./modules/names/races/orc";
-import TieflingSet from "./modules/names/races/tiefling";
-import TrollSet from "./modules/names/races/troll";
+import * as MUN from "@ironarachne/made-up-names";
 
 import express from "express";
-import GeneratorSet from "./modules/names/generatorset";
+import winston from "winston";
 
-const winston = require("winston");
 const console = new winston.transports.Console();
 winston.add(console);
 
 const app = express();
 const port = 3000;
-const dragonbornGenSet: GeneratorSet = new DragonbornSet();
-const dwarfGenSet: GeneratorSet = new DwarfSet();
-const elfGenSet: GeneratorSet = new ElfSet();
-const gnomeGenSet: GeneratorSet = new GnomeSet();
-const goblinGenSet: GeneratorSet = new GoblinSet();
-const halfElfGenSet: GeneratorSet = new HalfElfSet();
-const halflingGenSet: GeneratorSet = new HalflingSet();
-const halfOrcGenSet: GeneratorSet = new HalfOrcSet();
-const humanGenSet: GeneratorSet = new HumanSet();
-const orcGenSet: GeneratorSet = new OrcSet();
-const tieflingGenSet: GeneratorSet = new TieflingSet();
-const trollGenSet: GeneratorSet = new TrollSet();
+const dragonbornGenSet: MUN.GeneratorSet = new MUN.DragonbornSet();
+const dwarfGenSet: MUN.GeneratorSet = new MUN.DwarfSet();
+const elfGenSet: MUN.GeneratorSet = new MUN.ElfSet();
+const gnomeGenSet: MUN.GeneratorSet = new MUN.GnomeSet();
+const goblinGenSet: MUN.GeneratorSet = new MUN.GoblinSet();
+const halfElfGenSet: MUN.GeneratorSet = new MUN.HalfElfSet();
+const halflingGenSet: MUN.GeneratorSet = new MUN.HalflingSet();
+const halfOrcGenSet: MUN.GeneratorSet = new MUN.HalfOrcSet();
+const humanGenSet: MUN.GeneratorSet = new MUN.HumanSet();
+const orcGenSet: MUN.GeneratorSet = new MUN.OrcSet();
+const tieflingGenSet: MUN.GeneratorSet = new MUN.TieflingSet();
+const trollGenSet: MUN.GeneratorSet = new MUN.TrollSet();
 
 class NameResponse {
   count: number;
@@ -124,11 +112,11 @@ app.get("/troll/", (req: express.Request, res: express.Response) => {
 });
 
 app.listen(port, () => {
-  winston.info("MUNA is running");
+  winston.info(`MUNA is running on port ${port}!`);
 });
 
 function getNames(race: string, nameType: string, count: number): NameResponse {
-  let sets: Record<string, GeneratorSet> = {
+  let sets: Record<string, MUN.GeneratorSet> = {
     dragonborn: dragonbornGenSet,
     dwarf: dwarfGenSet,
     elf: elfGenSet,
@@ -150,11 +138,11 @@ function getNames(race: string, nameType: string, count: number): NameResponse {
   let genSet = sets[race];
   let result = new NameResponse(count, []);
 
-  if (nameType == "male") {
+  if (nameType == "male" && genSet.male) {
     result.names = genSet.male.generate(count);
-  } else if (nameType == "female") {
+  } else if (nameType == "female" && genSet.female) {
     result.names = genSet.female.generate(count);
-  } else if (nameType == "family") {
+  } else if (nameType == "family" && genSet.family) {
     result.names = genSet.family.generate(count);
   } else {
     throw new Error(`bad name type: ${nameType}`);
