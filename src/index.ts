@@ -1,17 +1,7 @@
-"use strict";
-
-import 'newrelic';
-
 import * as MUN from "@ironarachne/made-up-names";
+import { AutoRouter } from "itty-router";
+import NameResponse from "./name_response.js";
 
-import express from "express";
-import winston from "winston";
-
-const console = new winston.transports.Console();
-winston.add(console);
-
-const app = express();
-const port = 3000;
 const dragonbornGenSet: MUN.GeneratorSet = new MUN.DragonbornSet();
 const dwarfGenSet: MUN.GeneratorSet = new MUN.DwarfSet();
 const elfGenSet: MUN.GeneratorSet = new MUN.ElfSet();
@@ -25,95 +15,20 @@ const orcGenSet: MUN.GeneratorSet = new MUN.OrcSet();
 const tieflingGenSet: MUN.GeneratorSet = new MUN.TieflingSet();
 const trollGenSet: MUN.GeneratorSet = new MUN.TrollSet();
 
-class NameResponse {
-  count: number;
-  names: string[];
+const router = AutoRouter();
 
-  constructor(count: number, names: string[]) {
-    this.count = count;
-    this.names = names;
-  }
-}
-
-function handleNames(
-  raceName: string,
-  req: express.Request,
-  res: express.Response
-) {
-  let count: number = 10;
-  if (req.query.count) {
-    count = parseInt(req.query.count as string);
-  }
-  let nameType: string = "male";
-  if (req.query.nameType && typeof req.query.nameType === "string") {
-    nameType = req.query.nameType;
-  }
-  let response;
-  try {
-    response = getNames(raceName, nameType, count);
-  } catch (err) {
-    winston.error(`ERROR: /${raceName}/ ${nameType} ${count}`);
-    res.sendStatus(500);
-  }
-  winston.info(`/${raceName}/ ${nameType} ${count}`);
-  res.send(response);
-}
-
-app.get("/", (req: express.Request, res: express.Response) => {
-  res.send("MUNA!");
+router.get("/", () => {
+  return {
+    message:
+      "This is MUNA. Use it like /race/elf/female/10. The following races are available: dragonborn, dwarf, elf, gnome, goblin, halfling, halfelf, halforc, human, orc, tiefling, troll.",
+  };
 });
 
-app.get("/dragonborn/", (req: express.Request, res: express.Response) => {
-  handleNames("dragonborn", req, res);
+router.get("/race/:race/:nameType/:count", ({ race, nameType, count }) => {
+  return getNames(race, nameType, count);
 });
 
-app.get("/dwarf/", (req: express.Request, res: express.Response) => {
-  handleNames("dwarf", req, res);
-});
-
-app.get("/elf/", (req: express.Request, res: express.Response) => {
-  handleNames("elf", req, res);
-});
-
-app.get("/gnome/", (req: express.Request, res: express.Response) => {
-  handleNames("gnome", req, res);
-});
-
-app.get("/goblin/", (req: express.Request, res: express.Response) => {
-  handleNames("goblin", req, res);
-});
-
-app.get("/halfling/", (req: express.Request, res: express.Response) => {
-  handleNames("halfling", req, res);
-});
-
-app.get("/halfelf/", (req: express.Request, res: express.Response) => {
-  handleNames("halfelf", req, res);
-});
-
-app.get("/halforc/", (req: express.Request, res: express.Response) => {
-  handleNames("halforc", req, res);
-});
-
-app.get("/human/", (req: express.Request, res: express.Response) => {
-  handleNames("human", req, res);
-});
-
-app.get("/orc/", (req: express.Request, res: express.Response) => {
-  handleNames("orc", req, res);
-});
-
-app.get("/tiefling/", (req: express.Request, res: express.Response) => {
-  handleNames("tiefling", req, res);
-});
-
-app.get("/troll/", (req: express.Request, res: express.Response) => {
-  handleNames("troll", req, res);
-});
-
-app.listen(port, () => {
-  winston.info(`MUNA is running on port ${port}!`);
-});
+export default { ...router };
 
 function getNames(race: string, nameType: string, count: number): NameResponse {
   let sets: Record<string, MUN.GeneratorSet> = {
@@ -136,7 +51,10 @@ function getNames(race: string, nameType: string, count: number): NameResponse {
   }
 
   let genSet = sets[race];
-  let result = new NameResponse(count, []);
+  let result: NameResponse = {
+    count: count,
+    names: [],
+  };
 
   if (nameType == "male" && genSet.male) {
     result.names = genSet.male.generate(count);
