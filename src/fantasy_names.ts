@@ -24,6 +24,11 @@ export function getNames(
     result.names = genSet.female.generate(count);
   } else if (nameType == "family" && genSet.family) {
     result.names = genSet.family.generate(count);
+  } else if (nameType == "given" && genSet.male && genSet.female) {
+    let femaleNames = genSet.female.generate(Math.floor(count / 2));
+    let maleNames = genSet.male.generate(count - femaleNames.length);
+    result.names = femaleNames.concat(maleNames);
+    shuffle(result.names);
   } else if (nameType == "region" && genSet.country) {
     result.names = genSet.country.generate(count);
   } else if (nameType == "town" && genSet.town) {
@@ -35,4 +40,18 @@ export function getNames(
   }
 
   return result;
+}
+
+function shuffle(array: any[]) {
+  let currentIndex = array.length;
+
+  while (currentIndex != 0) {
+    let randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex],
+      array[currentIndex],
+    ];
+  }
 }
