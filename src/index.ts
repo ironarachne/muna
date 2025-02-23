@@ -8,6 +8,20 @@ const generatorSets: MUN.GeneratorSet[] = MUN.fantasyRaceSets();
 const app = new Hono();
 app.use(logger());
 
+app.use(async (c, next) => {
+  const corsHeaders = {
+    'Access-Control-Allow-Headers': '*',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Origin': '*',
+  };
+
+  c.res.headers.set('Access-Control-Allow-Origin', '*');
+  c.res.headers.set('Access-Control-Allow-Headers', '*');
+  c.res.headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+
+  await next();
+});
+
 app.get("/", (c) => {
   const raceNames = generatorSets.map((set) => set.name);
 
