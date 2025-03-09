@@ -1,5 +1,5 @@
 import * as MUN from "@ironarachne/made-up-names";
-import NameResponse from "./name_response.js";
+import type NameResponse from "./name_response.js";
 
 const generatorSets: MUN.GeneratorSet[] = MUN.fantasyRaceSets();
 
