@@ -1,4 +1,4 @@
-export default interface NameResponse {
+export type NameResponse = {
   count: number;
   names: string[];
 }
