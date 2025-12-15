@@ -1,6 +1,6 @@
 {
   "name": "muna",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "Made-Up Name API",
   "main": "index.js",
   "type": "module",
@@ -16,7 +16,7 @@
   "license": "MIT",
   "dependencies": {
     "@hono/node-server": "^1.19.6",
-    "@ironarachne/made-up-names": "^2.3.4",
+    "@ironarachne/made-up-names": "^2.3.5",
     "@ironarachne/rng": "^2.1.1",
     "hono": "^4.10.7"
   },
