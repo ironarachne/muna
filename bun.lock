@@ -6,7 +6,7 @@
       "name": "muna",
       "dependencies": {
         "@hono/node-server": "^1.19.6",
-        "@ironarachne/made-up-names": "^2.3.5",
+        "@ironarachne/made-up-names": "^2.3.6",
         "@ironarachne/rng": "^2.1.1",
         "hono": "^4.10.7",
       },
@@ -69,7 +69,7 @@
 
     "@hono/node-server": ["@hono/node-server@1.19.6", "", { "peerDependencies": { "hono": "^4" } }, "sha512-Shz/KjlIeAhfiuE93NDKVdZ7HdBVLQAfdbaXEaoAVO3ic9ibRSLGIQGkcBbFyuLr+7/1D5ZCINM8B+6IvXeMtw=="],
 
-    "@ironarachne/made-up-names": ["@ironarachne/made-up-names@2.3.5", "", { "dependencies": { "@ironarachne/rng": "^2.1.2", "@ironarachne/word-generator": "^2.1.1", "@ironarachne/words": "^1.0.1", "lodash": "^4.17.21" } }, "sha512-y20enpeKmSvB4ld4xM21/FtXl03kdLn41ikYN7aE3QlSDQ6JXbNPYykTOFV50w7TrnBAHsIy907uwriIV/+Oyw=="],
+    "@ironarachne/made-up-names": ["@ironarachne/made-up-names@2.3.6", "", { "dependencies": { "@ironarachne/rng": "^2.1.2", "@ironarachne/word-generator": "^2.1.1", "@ironarachne/words": "^1.0.1", "lodash": "^4.17.21" } }, "sha512-xiUC1K3SxchrhV8mt/4TZhusqR8Ue+oHJJy2tqa11nxLYHb8Jx1VClW1WhI7xuJLtzOynz+bkEmgDEDJ+EnHFA=="],
 
     "@ironarachne/rng": ["@ironarachne/rng@2.1.1", "", {}, "sha512-MrpfqIgDwQcsq34IsdEBdk1N/3vRCEK+u885I8WTUgBANlgkBbvZcZ3WT0izxZgN8oOHcInR6XbWpE+rzucyVw=="],
 
